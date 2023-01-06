@@ -1,6 +1,10 @@
 
+const Movie = require('../models/Movie')
+const {StatusCodes} = require('http-status-codes')
+
 const getAllMovies = async (req, res) => {
-    res.send('get all movies')
+    const movies = await Movie.find({createdBy:req.user.userId})
+    res.status(StatusCodes.OK).json({movies, count:movies.length})
 }
 
 const getMovie = async (req, res) => {
@@ -8,7 +12,9 @@ const getMovie = async (req, res) => {
 }
 
 const createMovie = async (req, res) => {
-    res.send('create movie')
+    req.body.createdBy = req.user.userId
+    const movie = await Movie.create(req.body)
+    res.status(StatusCodes.CREATED).json({movie})
 }
 
 const updateMovie = async (req, res) => {

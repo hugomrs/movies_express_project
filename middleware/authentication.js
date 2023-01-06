@@ -1,11 +1,12 @@
 
 const User = require('../models/User')
 const jwt = require('jsonwebtoken')
+const {UnauthenticatedError} = require('../errors')
 
 const auth = async (req, res, next) => {
     const authHeader = req.headers.authorization
     if (!authHeader || !authHeader.startsWith('Bearer')){
-        console.log('Throw authentication invalid error here')
+        throw new UnauthenticatedError('Authentication invalid bearer')
     }
     const token = authHeader.split(' ')[1]
     try {
@@ -13,7 +14,7 @@ const auth = async (req, res, next) => {
         req.user = {userId:payload.userId, name:payload.name}
         next()
     } catch (error) {
-        console.log('throw authentication invalid error here')
+        throw new UnauthenticatedError('Authentication invalid')
     }
 }
 
