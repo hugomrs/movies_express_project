@@ -6,7 +6,7 @@ const {getAllMovies, getMovie, createMovie, updateMovie, deleteMovie} = require(
 router.get('/', getAllMovies)
 router.get('/:id', getMovie)
 router.post('/', createMovie)
-router.post('/:id', updateMovie)
+router.patch('/:id', updateMovie)
 router.delete('/:id', deleteMovie)
 
 module.exports = router
