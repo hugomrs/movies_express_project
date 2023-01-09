@@ -38,7 +38,7 @@ const updateMovie = async (req, res) => {
         user:{userId},
         params:{id:movieId}
     } = req
-
+ 
     if (title === '' || !releaseYear || !rating){
         throw new BadRequestError('Movie title, release year and rating must be provided')
     }
@@ -52,7 +52,18 @@ const updateMovie = async (req, res) => {
 }
 
 const deleteMovie = async (req, res) => {
-    res.send('delete movie')
+    const {
+        user:{userId},
+        params:{id:movieId}
+    } = req
+    
+    const movie = await Movie.findByIdAndRemove({_id:movieId, createdBy:userId})
+    if (!movie){
+        throw new NotFoundError(`No movie with id ${movieId}`)
+    }
+
+
+    res.status(StatusCodes.OK).send()
 }
 
 module.exports = {
