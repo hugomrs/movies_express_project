@@ -14,11 +14,18 @@ const authenticateUser = require('./middleware/authentication')
 const authRouter = require('./routes/auth')
 const moviesRouter = require('./routes/movies')
 
+//Error handling
+const notFoundMiddleware = require('./middleware/not-found')
+const errorHandlerMiddleware = require('./middleware/error-handler')
+
 app.use(express.json())
 
 //Routes
 app.use('/api/v1/auth', authRouter)
 app.use('/api/v1/movies', authenticateUser, moviesRouter)
+
+app.use(notFoundMiddleware)
+app.use(errorHandlerMiddleware)
 
 const port = process.env.PORT || 3000;
 
